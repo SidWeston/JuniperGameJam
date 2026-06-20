@@ -10,6 +10,11 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float projectileSpeed;
     protected bool canFire = true;
 
+    //animations
+    public AnimationClip aimAnim;
+    public AnimationClip fireAnim;
+    public AnimationClip reloadAnim;
+
     public GameObject bulletProjectile;
     public Transform bulletSpawnPos;
 

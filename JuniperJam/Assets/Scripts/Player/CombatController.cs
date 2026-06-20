@@ -3,7 +3,7 @@ using UnityEngine;
 public class CombatController : MonoBehaviour
 {
     //components
-    [SerializeField] private Weapon currentWeapon;
+    public Weapon currentWeapon;
     [SerializeField] private GameObject body;
 
     [SerializeField] private float rotationSpeed;

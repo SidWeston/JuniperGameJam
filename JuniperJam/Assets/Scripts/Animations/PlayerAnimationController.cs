@@ -1,0 +1,62 @@
+using UnityEngine;
+using Animancer;
+
+public class PlayerAnimationController : MonoBehaviour
+{
+    public enum MovementState
+    {
+        Idle,
+        Walking,
+        Sprinting
+    }
+
+    public AnimancerComponent animancer;
+    public PlayerMovement characterMovement;
+    public CombatController combatController;
+
+    private DirectionalAnimationSet8 currentAnimSet;
+    [SerializeField] private DirectionalAnimationSet8 walkAnimSet;
+    [SerializeField] private DirectionalAnimationSet8 sprintAnimSet;
+    public AnimationClip idleAnim;
+
+    public MovementState currentMovementState = MovementState.Idle; //assume player starts idle
+
+    private Vector2 moveVector;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        InputManager.instance.moveEvent += OnMove;
+
+        if (!animancer)
+        {
+            animancer = GetComponent<AnimancerComponent>();
+        }
+
+        currentAnimSet = walkAnimSet;
+
+        animancer.Layers[0].Play(idleAnim);
+        animancer.Layers[1].Play(combatController.currentWeapon.aimAnim);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void OnMove(Vector2 input)
+    {
+        moveVector = input;
+        if(moveVector == Vector2.zero)
+        {
+            currentMovementState = MovementState.Idle;
+            animancer.Layers[0].Play(idleAnim, 0.25f);
+        }
+        else
+        {
+            currentMovementState = MovementState.Walking;
+            animancer.Layers[0].Play(currentAnimSet.Get(moveVector), 0.25f);
+        }
+    }
+}
