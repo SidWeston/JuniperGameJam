@@ -3,6 +3,7 @@ using UnityEngine;
 public class CombatController : MonoBehaviour
 {
     //components
+    [SerializeField] private Weapon currentWeapon;
     [SerializeField] private GameObject body;
 
     [SerializeField] private float rotationSpeed;
@@ -17,6 +18,7 @@ public class CombatController : MonoBehaviour
     {
         groundPlane = new Plane(Vector3.up, transform.position);
         InputManager.instance.mouseEvent += OnMouseMove;
+        InputManager.instance.shootKey.keyPress += OnFire;
     }
 
     // Update is called once per frame
@@ -39,5 +41,17 @@ public class CombatController : MonoBehaviour
     private void OnMouseMove(Vector2 input)
     {
         mousePos = input;
+    }
+
+    private void OnFire(bool input)
+    {
+        if(input)
+        {
+            currentWeapon.FireWeapon(groundPlane);
+        }
+        else
+        {
+            currentWeapon.UnFire();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WindupManager : MonoBehaviour
 {
@@ -8,10 +9,10 @@ public class WindupManager : MonoBehaviour
 
     //components
     [SerializeField] private PlayerMovement movement;
+    [SerializeField] private Slider energySlider;
 
     //tuning
-    [SerializeField] private float minRadius = 5f; //ignrore input too close to the center, but keep it small for people with small desks
-    [SerializeField] private float degreesPerFullWind = 360f;    
+    [SerializeField] private float minRadius = 5f; //ignrore input too close to the center, but keep it small for people with small     
     
     private float lastAngle;
     private bool hasLastAngle = false;
@@ -33,16 +34,21 @@ public class WindupManager : MonoBehaviour
         {
             movement = GetComponent<PlayerMovement>();
         }
+
+        windupCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0));
     }
 
     // Update is called once per frame
     void Update()
     {
+        //UI 
+        energySlider.value = energy / maxEnergy;
+
         if(winding)
         {
             if(holdingPivot)
             {
-                //windupCenter is whereever the player clicked initially
+                //windupCenter should be the center of the screen
                 Vector2 offset = mousePos - windupCenter;
 
                 if (offset.magnitude < minRadius)
@@ -67,9 +73,9 @@ public class WindupManager : MonoBehaviour
                 lastAngle = currentAngle;
                 
                 //clamp it to 0, otherwise turning the other way reduces energy
-                delta = Mathf.Clamp(delta, 0, delta);
+                delta = Mathf.Clamp(delta, delta, 0);
                 //finally add the energy on
-                energy += (delta * energyGainRate) * Time.deltaTime;
+                energy += (-delta * energyGainRate) * Time.deltaTime;
                 energy = Mathf.Clamp(energy, 0, maxEnergy);
             }
         }
@@ -88,13 +94,11 @@ public class WindupManager : MonoBehaviour
     {        
         if(input)
         {
-            holdingPivot = true;
-            windupCenter = mousePos;
+            holdingPivot = true;            
         }
         else
         {
-            holdingPivot = false;
-            windupCenter = Vector2.zero;
+            holdingPivot = false;            
         }
         hasLastAngle = false;
     }

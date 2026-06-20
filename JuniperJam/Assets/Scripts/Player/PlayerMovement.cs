@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     //components
     [SerializeField] private CharacterController controller;
-    [SerializeField] private WindupManager windupManager;
+    [SerializeField] private WindupManager windupManager;    
 
     //settings
     [SerializeField] private float moveSpeed;    
@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {        
         if(windupManager.energy > 0)
         {
             //if movement input being inputted by the input
