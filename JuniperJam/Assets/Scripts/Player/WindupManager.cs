@@ -10,7 +10,7 @@ public class WindupManager : MonoBehaviour
     [SerializeField] private PlayerMovement movement;
 
     //tuning
-    [SerializeField] private float minRadius = 5f; //ignrore input too close to the center
+    [SerializeField] private float minRadius = 5f; //ignrore input too close to the center, but keep it small for people with small desks
     [SerializeField] private float degreesPerFullWind = 360f;    
     
     private float lastAngle;
@@ -42,7 +42,7 @@ public class WindupManager : MonoBehaviour
         {
             if(holdingPivot)
             {
-                //pivot is whereever the player clicked initially
+                //windupCenter is whereever the player clicked initially
                 Vector2 offset = mousePos - windupCenter;
 
                 if (offset.magnitude < minRadius)

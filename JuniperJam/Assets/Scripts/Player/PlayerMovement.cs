@@ -34,11 +34,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void SetMoveResource()
-    {
-
-    }
-
     private void OnMove(Vector2 input)
     {
         moveVector = input;
