@@ -545,6 +545,7 @@ GameObject:
   - component: {fileID: 1182161689}
   - component: {fileID: 1182161691}
   - component: {fileID: 1182161690}
+  - component: {fileID: 1182161692}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -582,9 +583,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1182161691}
+  windupManager: {fileID: 1182161692}
   moveSpeed: 5
-  moveResource: 1000
-  resourceDrainRate: 2
+  resourceDrainRate: 8
 --- !u!143 &1182161691
 CharacterController:
   m_ObjectHideFlags: 0
@@ -610,6 +611,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1182161692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182161688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4386dcf6c88ea0443b14a51fb1b943ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windEnergy: 100
+  movement: {fileID: 1182161690}
+  minRadius: 2
+  degreesPerFullWind: 360
+  maxDegreesPerFrame: 60
 --- !u!1 &1393461369
 GameObject:
   m_ObjectHideFlags: 0

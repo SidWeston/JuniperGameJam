@@ -2,14 +2,24 @@ using UnityEngine;
 
 public class WindupManager : MonoBehaviour
 {
-    //tuning
-    [SerializeField] private float minRadius = 20f;
-    
+    public float energy = 100.0f;
+    public float energyGainRate = 2f;
+    public float maxEnergy = 100.0f;
 
+    //components
+    [SerializeField] private PlayerMovement movement;
+
+    //tuning
+    [SerializeField] private float minRadius = 5f; //ignrore input too close to the center
+    [SerializeField] private float degreesPerFullWind = 360f;    
+    
+    private float lastAngle;
+    private bool hasLastAngle = false;
+    private Vector2 windupCenter = Vector2.zero;
 
     //inputs
     private bool winding = false;
-    private bool holdingPivot = false;
+    private bool holdingPivot = false;    
     private Vector2 mousePos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,6 +28,11 @@ public class WindupManager : MonoBehaviour
         InputManager.instance.windupKey.keyPress += OnEnterWindup;
         InputManager.instance.shootKey.keyPress += OnMouseClick;
         InputManager.instance.mouseEvent += OnMouseMove;
+
+        if(!movement)
+        {
+            movement = GetComponent<PlayerMovement>();
+        }
     }
 
     // Update is called once per frame
@@ -25,18 +40,63 @@ public class WindupManager : MonoBehaviour
     {
         if(winding)
         {
+            if(holdingPivot)
+            {
+                //pivot is whereever the player clicked initially
+                Vector2 offset = mousePos - windupCenter;
 
+                if (offset.magnitude < minRadius)
+                {
+                    return;
+                }
+
+                //I still have no idea what an Atan2 is. thanks google.
+                float currentAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
+
+                //check if its the first time through
+                if(!hasLastAngle)
+                {
+                    lastAngle = currentAngle;
+                    hasLastAngle = true;
+                    //cant compare them if they're the same, so return for now
+                    return;
+                }
+
+                //calculate the angle to see how far the mouse has turned
+                float delta = Mathf.DeltaAngle(lastAngle, currentAngle);
+                lastAngle = currentAngle;
+                
+                //clamp it to 0, otherwise turning the other way reduces energy
+                delta = Mathf.Clamp(delta, 0, delta);
+                //finally add the energy on
+                energy += (delta * energyGainRate) * Time.deltaTime;
+                energy = Mathf.Clamp(energy, 0, maxEnergy);
+            }
         }
     }
 
     private void OnEnterWindup(bool input)
     {
-        winding = input;
+        if (!input) return;
+
+        winding = !winding;
+        holdingPivot = false;
+        hasLastAngle = false;        
     }
 
     private void OnMouseClick(bool input)
-    {
-
+    {        
+        if(input)
+        {
+            holdingPivot = true;
+            windupCenter = mousePos;
+        }
+        else
+        {
+            holdingPivot = false;
+            windupCenter = Vector2.zero;
+        }
+        hasLastAngle = false;
     }
 
     private void OnMouseMove(Vector2 input)

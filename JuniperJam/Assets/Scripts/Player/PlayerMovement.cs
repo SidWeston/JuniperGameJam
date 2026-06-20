@@ -4,10 +4,10 @@ public class PlayerMovement : MonoBehaviour
 {
     //components
     [SerializeField] private CharacterController controller;
+    [SerializeField] private WindupManager windupManager;
 
     //settings
-    [SerializeField] private float moveSpeed;
-    public float moveResource;
+    [SerializeField] private float moveSpeed;    
     [SerializeField] private float resourceDrainRate;
 
     //input variables
@@ -22,16 +22,21 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(moveResource > 0)
+        if(windupManager.energy > 0)
         {
             //if movement input being inputted by the input
             if(moveVector.magnitude > 0)
             {
                 Vector3 movement = new Vector3(moveVector.x, 0, moveVector.y);
                 controller.Move(movement * moveSpeed * Time.deltaTime);
-                moveResource -= resourceDrainRate * Time.deltaTime;
+                windupManager.energy -= resourceDrainRate * Time.deltaTime;
             }
         }
+    }
+
+    public void SetMoveResource()
+    {
+
     }
 
     private void OnMove(Vector2 input)
