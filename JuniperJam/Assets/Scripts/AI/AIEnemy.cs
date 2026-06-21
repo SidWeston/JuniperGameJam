@@ -34,6 +34,7 @@ public class AIEnemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         target = GameObject.FindGameObjectWithTag("Player");
         agent.SetDestination(target.transform.position);
 
@@ -88,6 +89,7 @@ public class AIEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (dead) return; //if already dead then dont bother
         health -= damage;
         if(health <= 0)
         {
@@ -100,6 +102,8 @@ public class AIEnemy : MonoBehaviour
             AnimationClip deathAnim = deathAnims[Random.Range(0, deathAnims.Count)];
             animancer.Play(deathAnim);
             Invoke("DestroyAfterTime", deathAnim.length);
+
+            WaveSystem.instance.currentZombies--;
         }
     }
 

@@ -10,6 +10,9 @@ public class CombatController : MonoBehaviour
 
     private Plane groundPlane;
 
+    private bool firing = false;
+    public bool weaponsEnabled = true;
+
     //inputs
     private Vector2 mousePos;
 
@@ -24,6 +27,15 @@ public class CombatController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!weaponsEnabled)
+        {
+            if(firing)
+            {
+                OnFire(false);
+            }
+            return;
+        }
+
         //look towards mouse pos
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         if(groundPlane.Raycast(ray, out float distance))
@@ -45,12 +57,15 @@ public class CombatController : MonoBehaviour
 
     private void OnFire(bool input)
     {
+        if (!weaponsEnabled) return;
         if(input)
         {
+            firing = true;
             currentWeapon.FireWeapon(groundPlane);
         }
         else
         {
+            firing = false;
             currentWeapon.UnFire();
         }
     }

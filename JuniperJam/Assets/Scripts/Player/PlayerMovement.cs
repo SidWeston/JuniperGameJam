@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;    
     [SerializeField] private float resourceDrainRate;
 
+    public bool movementEnabled = true;
+
     //input variables
     private Vector2 moveVector;
 
@@ -21,7 +23,9 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
+        if (!movementEnabled) return;
+
         if(windupManager.energy > 0)
         {
             //if movement input being inputted by the input

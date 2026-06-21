@@ -45,6 +45,15 @@ public class PlayerAnimationController : MonoBehaviour
         
     }
 
+    public Vector2 WorldToLocalFacing(Vector2 worldMoveVector, float facingYRotationDegrees)
+    {
+        float rad = -facingYRotationDegrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+
+        return new Vector2(worldMoveVector.x * cos - worldMoveVector.y * sin, worldMoveVector.x * sin + worldMoveVector.y * cos);
+    }
+
     private void OnMove(Vector2 input)
     {
         moveVector = input;
@@ -56,7 +65,8 @@ public class PlayerAnimationController : MonoBehaviour
         else
         {
             currentMovementState = MovementState.Walking;
-            animancer.Layers[0].Play(currentAnimSet.Get(moveVector), 0.25f);
+            Vector2 relativeMove = WorldToLocalFacing(moveVector, transform.eulerAngles.y);
+            animancer.Layers[0].Play(currentAnimSet.Get(relativeMove), 0.25f);
         }
     }
 }

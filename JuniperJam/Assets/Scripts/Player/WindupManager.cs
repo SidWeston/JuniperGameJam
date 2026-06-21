@@ -1,4 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class WindupManager : MonoBehaviour
@@ -9,7 +13,11 @@ public class WindupManager : MonoBehaviour
 
     //components
     [SerializeField] private PlayerMovement movement;
+    [SerializeField] private CombatController combatController;
     [SerializeField] private Slider energySlider;
+    [SerializeField] private RawImage spinImage;
+    [SerializeField] private GameObject keyObject;
+    [SerializeField] private GameObject smallKeyObject;
 
     //tuning
     [SerializeField] private float minRadius = 5f; //ignrore input too close to the center, but keep it small for people with small     
@@ -36,6 +44,9 @@ public class WindupManager : MonoBehaviour
         }
 
         windupCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0));
+
+        keyObject.GetComponent<Renderer>().enabled = false;
+        spinImage.enabled = false;
     }
 
     // Update is called once per frame
@@ -70,10 +81,15 @@ public class WindupManager : MonoBehaviour
 
                 //calculate the angle to see how far the mouse has turned
                 float delta = Mathf.DeltaAngle(lastAngle, currentAngle);
-                lastAngle = currentAngle;
-                
+                lastAngle = currentAngle;                
+
                 //clamp it to 0, otherwise turning the other way reduces energy
                 delta = Mathf.Clamp(delta, delta, 0);
+
+                //rotate the key
+                keyObject.transform.Rotate(new Vector3(delta, 0, 0));
+                smallKeyObject.transform.Rotate(new Vector3(delta, 0, 0));
+
                 //finally add the energy on
                 energy += (-delta * energyGainRate) * Time.deltaTime;
                 energy = Mathf.Clamp(energy, 0, maxEnergy);
@@ -87,7 +103,17 @@ public class WindupManager : MonoBehaviour
 
         winding = !winding;
         holdingPivot = false;
-        hasLastAngle = false;        
+        hasLastAngle = false;
+
+        keyObject.GetComponent<Renderer>().enabled = winding;
+        spinImage.enabled = winding;
+        if(!winding)
+        {
+            keyObject.transform.localRotation = Quaternion.Euler(0, 90, 180);
+        }
+
+        movement.movementEnabled = !winding;
+        combatController.weaponsEnabled = !winding;
     }
 
     private void OnMouseClick(bool input)
