@@ -37,6 +37,7 @@ public class AutomaticWeapon : Weapon
         while(firing)
         {
             GameObject bullet = Instantiate(bulletProjectile, bulletSpawnPos.position, bulletSpawnPos.rotation * Quaternion.Euler(90, 0, 0));
+            bullet.GetComponent<Bullet>().damage = weaponDamage;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             if (groundPlane.Raycast(ray, out float distance))
             {

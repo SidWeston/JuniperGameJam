@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: 4af113519ec41ab40a5586393b2098b8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 268209
+  packageName: Zombie Animation Set
+  packageVersion: 1.1
+  assetPath: Assets/Nephilite Studios/Zombie Animation Set/Animations/In Place/zombie_light_attack_02.fbx
+  uploadId: 895480
 ModelImporter:
-  serializedVersion: 24200
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -17,11 +24,7 @@ ModelImporter:
     removeConstantScaleCurves: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'zombie_light_attack_02' has import animation
-      warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'Ball_R' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'Ball_L' is
-      inbetween humanoid transforms and has rotation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -89,9 +92,6 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
-    generateMeshLods: 0
-    meshLodGenerationFlags: 0
-    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -754,8 +754,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0ad932253e8dc8841948afa5d1a0d051,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0ad932253e8dc8841948afa5d1a0d051, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
@@ -767,10 +766,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 268209
-  packageName: Zombie Animation Set
-  packageVersion: 1.1
-  assetPath: Assets/Nephilite Studios/Zombie Animation Set/Animations/In Place/zombie_light_attack_02.fbx
-  uploadId: 895480
