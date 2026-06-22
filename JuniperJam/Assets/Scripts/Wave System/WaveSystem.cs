@@ -41,14 +41,19 @@ public class WaveSystem : MonoBehaviour
 
         NextWave();
     }
-
+    
     // Update is called once per frame
     void Update()
+    {      
+    }
+
+    public void KillZombie()
     {
-        if (currentZombies == 0)
+        currentZombies--;
+        if (zombiesToSpawn == 0 && currentZombies == 0)
         {
             Invoke("NextWave", 4.0f);
-        }
+        }        
     }
 
     public void NextWave()
@@ -57,7 +62,7 @@ public class WaveSystem : MonoBehaviour
         //manually set the first wave, then the next ones can increase algorithmically
         if(currentWave == 1)
         {
-            zombieHealth = 40f;
+            zombieHealth = 100f;
             numOfZombies = 7;
             zombiesToSpawn = numOfZombies;
             minSpeed = 3f;
@@ -81,9 +86,7 @@ public class WaveSystem : MonoBehaviour
 
     public float CalculateZombieHealth()
     {
-        float multiplier = Mathf.Pow(1f + healthGrowRate, currentWave - 1);
-        multiplier = Mathf.Min(multiplier, maxHealth);
-        return zombieHealth * multiplier;
+        return zombieHealth * 1.1f;
     }
 
     public void CalculateZombieSpeedRange()
@@ -95,7 +98,7 @@ public class WaveSystem : MonoBehaviour
 
         //soft cap on speed
         min = Mathf.Min(min, maxOverallSpeed - 0.5f);
-        max = Mathf.Min(maxOverallSpeed, maxOverallSpeed);
+        max = Mathf.Min(max, maxOverallSpeed);
 
         minSpeed = min;
         maxSpeed = max;
@@ -106,12 +109,14 @@ public class WaveSystem : MonoBehaviour
         while(zombiesToSpawn > 0)
         {            
             int amount = Random.Range(minZombiesToSpawn, maxZombiesToSpawn);
-            List<GameObject> points = spawnPoints;            
+            List<GameObject> points = new List<GameObject>(spawnPoints);            
 
             for(int i = 0; i < amount; i++)
             {
                 GameObject chosenPoint = points[Random.Range(0, points.Count)];
-                Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                GameObject spawnedZombie = Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                spawnedZombie.TryGetComponent(out AIEnemy enemy);
+                enemy.SetStats(zombieHealth, Random.Range(minSpeed, maxSpeed));
                 points.Remove(chosenPoint);
                 zombiesToSpawn--;
                 currentZombies++;

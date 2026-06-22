@@ -103,8 +103,17 @@ public class AIEnemy : MonoBehaviour
             animancer.Play(deathAnim);
             Invoke("DestroyAfterTime", deathAnim.length);
 
-            WaveSystem.instance.currentZombies--;
+            TryGetComponent(out Collider col);
+            col.enabled = false;
+
+            WaveSystem.instance.KillZombie();
         }
+    }
+
+    public void SetStats(float newHealth, float newSpeed)
+    {
+        health = newHealth;
+        moveSpeed = newSpeed;
     }
 
     private void DestroyAfterTime()
