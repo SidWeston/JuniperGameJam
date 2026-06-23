@@ -5,6 +5,8 @@ public class Bullet : MonoBehaviour
     public Vector3 direction;
     public float lifeTime = 4.0f;
 
+    public int hitsLeft = 1;
+
     [Tooltip("will be set/overridden by the weapon when fired")]
     public float damage; 
 
@@ -26,7 +28,11 @@ public class Bullet : MonoBehaviour
         {            
             other.gameObject.TryGetComponent(out AIEnemy enemy);
             enemy.TakeDamage(damage);
-            Destroy(gameObject);
+            hitsLeft--;
+            if(hitsLeft == 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

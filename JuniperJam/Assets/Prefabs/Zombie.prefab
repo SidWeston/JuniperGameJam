@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 6161915307530159965}
   - component: {fileID: 1159442787040791817}
   - component: {fileID: 3140193224341787993}
+  - component: {fileID: 4170009432369329455}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Enemy
@@ -176,14 +177,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 1159442787040791817}
   animancer: {fileID: 2441525821490356362}
+  maskLayers: {fileID: 0}
+  unityAnimator: {fileID: 0}
+  attackTrigger: {fileID: 3140193224341787993}
+  bodyCollider: {fileID: 4170009432369329455}
   health: 100
   moveSpeed: 5
   attackCooldown: 2
-  walkAnim: {fileID: 1470454970490018069, guid: 5546e3807734fb848baa4996d9e956c7, type: 3}
-  runAnim: {fileID: -2432957212303469411, guid: 21fe50c1785561945818618435e1bf4e, type: 3}
+  walkAnim: {fileID: 7400000, guid: 17617cd9d978a4c4495c900d186de6b1, type: 2}
+  runAnim: {fileID: 7400000, guid: 22c0a64c589a44f45994ae5ecf60f818, type: 2}
   attackAnims:
   - {fileID: 7400000, guid: 745b29196f88e874b8e24d4e1b96ade6, type: 2}
-  - {fileID: 7400000, guid: d331ebaf1c0bad54c8b3966989405078, type: 2}
+  - {fileID: 7400000, guid: 01fb4eb8ec7577145814076293184893, type: 2}
   - {fileID: 7400000, guid: 200009c59b4a6ff42ac4039bb2c8b0ee, type: 2}
   - {fileID: 7400000, guid: de16c49e18b369746a075a98019141e3, type: 2}
   - {fileID: 7400000, guid: 282e183eb496e54439e123eb9b25c219, type: 2}
@@ -236,6 +241,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 1.5}
   m_Center: {x: 0, y: 1, z: 1}
+--- !u!65 &4170009432369329455
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944938298298210209}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1234447632461698016
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,8 +680,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8895016962709971238}
   - component: {fileID: 7292154834169462308}
-  - component: {fileID: 6433003666619448095}
   - component: {fileID: 2441525821490356362}
+  - component: {fileID: 6399518642699757467}
   m_Layer: 0
   m_Name: ToySoldier(1)
   m_TagString: Untagged
@@ -702,149 +728,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6433003666619448095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3971596734136036608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 005fb639ab942fa46adf4e9a009744d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Animancer: {fileID: 2441525821490356362}
-  _Definition:
-    _Transforms:
-    - {fileID: 1551826058698684319}
-    - {fileID: 1038675320649106158}
-    - {fileID: 8672743728386129327}
-    - {fileID: 8869697340816112308}
-    - {fileID: 2440815856098823171}
-    - {fileID: 2451673670445547809}
-    - {fileID: 9186911270974303527}
-    - {fileID: 3039658838698394732}
-    - {fileID: 3719922268555505251}
-    - {fileID: 1301680500252190803}
-    - {fileID: 3160740333173855886}
-    - {fileID: 8437456227920560694}
-    - {fileID: 6860530876905157849}
-    - {fileID: 493152808609389283}
-    - {fileID: 7238508319196624792}
-    - {fileID: 2021396834067793371}
-    - {fileID: 4975141647790296735}
-    - {fileID: 8939993329679383482}
-    - {fileID: 1512039818110995066}
-    - {fileID: 2905623317468747049}
-    - {fileID: 4809833005108938881}
-    - {fileID: 6846858674015241489}
-    - {fileID: 7457646123912963024}
-    - {fileID: 2511764394736278464}
-    - {fileID: 8955403117672680227}
-    - {fileID: 7964826729644357143}
-    - {fileID: 3639364535726869194}
-    - {fileID: 179352999865916357}
-    - {fileID: 8578301865640876943}
-    - {fileID: 4477471209552895039}
-    - {fileID: 6663990017028854152}
-    - {fileID: 4866356201890959750}
-    - {fileID: 3203436384365360770}
-    - {fileID: 8489462948023964940}
-    - {fileID: 3355410371970713695}
-    - {fileID: 96038847256212241}
-    - {fileID: 8220722257924737659}
-    - {fileID: 1113440562426271246}
-    - {fileID: 740280022872680994}
-    - {fileID: 5796593049695336316}
-    - {fileID: 373270069107778984}
-    _Weights:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 1
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    _RootMotionWeights:
-    - 1
-    - 0
-  _LayerCount: 2
 --- !u!114 &2441525821490356362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,6 +743,19 @@ MonoBehaviour:
   _Animator: {fileID: 7292154834169462308}
   _Transitions: {fileID: 0}
   _ActionOnDisable: 0
+--- !u!114 &6399518642699757467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3971596734136036608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fd0d07b74035b044b6b988bc0410ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zombieAI: {fileID: 6161915307530159965}
 --- !u!1 &4280004038664189386
 GameObject:
   m_ObjectHideFlags: 0

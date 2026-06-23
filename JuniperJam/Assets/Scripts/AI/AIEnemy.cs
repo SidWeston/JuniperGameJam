@@ -9,6 +9,8 @@ public class AIEnemy : MonoBehaviour
     private GameObject target;
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private AnimancerComponent animancer;
+    [SerializeField] private Collider attackTrigger;
+    [SerializeField] private Collider bodyCollider;
 
     //settings
     [SerializeField] private float health;
@@ -34,11 +36,12 @@ public class AIEnemy : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        moveAnim = moveSpeed > 3 ? runAnim : walkAnim;
+        agent.speed = moveSpeed;
+
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         target = GameObject.FindGameObjectWithTag("Player");
         agent.SetDestination(target.transform.position);
-
-        moveAnim = moveSpeed > 4 ? runAnim : walkAnim;
 
         animancer.Play(moveAnim);
     }
@@ -62,29 +65,39 @@ public class AIEnemy : MonoBehaviour
                 Attack();
                 canAttack = false;
             }
-            else
+        }
+
+        if(!canAttack)
+        {
+            a += Time.deltaTime;
+            if (a >= attackCooldown)
             {
-                a += Time.deltaTime;
-                if(a >= attackCooldown)
-                {
-                    canAttack = true;
-                    a = 0;
-                }
+                canAttack = true;
+                a = 0;
             }
         }
     }
 
     private void Attack()
     {
-        animancer.Layers[1].Weight = 1;
+        //animancer.Layers[1].Weight = 1;
         AnimationClip currentAttack = attackAnims[Random.Range(0, attackAnims.Count)];
-        animancer.Layers[1].Play(currentAttack);
+        animancer.Play(currentAttack);
         Invoke("OnAttackFinish", currentAttack.length);
     }
 
     private void OnAttackFinish()
     {
-        animancer.Layers[1].Weight = 0;
+        animancer.Play(moveAnim, 0.25f);
+    }
+
+    public void TryDealDamage()
+    {
+        if(playerInRange && !dead)
+        {
+            target.TryGetComponent(out PlayerHealth playerHealth);
+            playerHealth.TakeDamage(34f);
+        }
     }
 
     public void TakeDamage(float damage)
@@ -96,15 +109,13 @@ public class AIEnemy : MonoBehaviour
             dead = true;
             agent.enabled = false;
 
-            animancer.Layers[1].Stop();
-            animancer.Layers[1].Weight = 0;
             animancer.Stop();
             AnimationClip deathAnim = deathAnims[Random.Range(0, deathAnims.Count)];
             animancer.Play(deathAnim);
             Invoke("DestroyAfterTime", deathAnim.length);
 
-            TryGetComponent(out Collider col);
-            col.enabled = false;
+            attackTrigger.enabled = false;
+            bodyCollider.enabled = false;
 
             WaveSystem.instance.KillZombie();
         }

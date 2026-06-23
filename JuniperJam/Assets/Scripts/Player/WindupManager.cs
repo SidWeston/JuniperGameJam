@@ -1,8 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+
 using UnityEngine.UI;
 
 public class WindupManager : MonoBehaviour
@@ -10,6 +7,8 @@ public class WindupManager : MonoBehaviour
     public float energy = 100.0f;
     public float energyGainRate = 2f;
     public float maxEnergy = 100.0f;
+
+    [HideInInspector] public float energyPercent;
 
     //components
     [SerializeField] private PlayerMovement movement;
@@ -53,7 +52,8 @@ public class WindupManager : MonoBehaviour
     void Update()
     {
         //UI 
-        energySlider.value = energy / maxEnergy;
+        energyPercent = energy / maxEnergy;
+        energySlider.value = energyPercent;
 
         if(winding)
         {
@@ -133,4 +133,10 @@ public class WindupManager : MonoBehaviour
     {
         mousePos = input;
     }   
+
+    public void AddMaxEnergy(float moreEnergy)
+    {
+        maxEnergy += moreEnergy;
+        energy = maxEnergy;
+    }
 }

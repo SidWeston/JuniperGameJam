@@ -13,6 +13,11 @@ public class CombatController : MonoBehaviour
     private bool firing = false;
     public bool weaponsEnabled = true;
 
+    public float fireRateMulti;
+    public float damageMulti;
+    public int bulletsPerShot;
+    public int bulletPenetration;
+
     //inputs
     private Vector2 mousePos;
 
@@ -68,5 +73,25 @@ public class CombatController : MonoBehaviour
             firing = false;
             currentWeapon.UnFire();
         }
+    }
+
+    public void IncreaseFireRate(float addition)
+    {
+        fireRateMulti += addition;
+    }
+
+    public void IncreaseDamageMulti(float addition)
+    {
+        damageMulti += addition;
+    }
+
+    public void IncreaseBulletsPerShot(int addition)
+    {
+        bulletsPerShot += addition;
+    }
+
+    public void IncreaseBulletPen(int addition)
+    {
+        bulletPenetration += addition;
     }
 }

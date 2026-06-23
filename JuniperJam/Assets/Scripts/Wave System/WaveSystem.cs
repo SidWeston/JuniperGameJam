@@ -25,9 +25,7 @@ public class WaveSystem : MonoBehaviour
     private int maxZombiesToSpawn = 2, minZombiesToSpawn = 1; //the amount of zombies that can spawn at once
     private float spawnInterval = 1.5f;
     [SerializeField] private GameObject zombiePrefab;
-    [SerializeField] private List<GameObject> spawnPoints;
-
-    private IEnumerator spawningCoroutine;
+    [SerializeField] private List<GameObject> spawnPoints;    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,9 +33,7 @@ public class WaveSystem : MonoBehaviour
         if(!instance)
         {
             instance = this;
-        }
-
-        spawningCoroutine = SpawnZombies();
+        }        
 
         NextWave();
     }
@@ -65,8 +61,8 @@ public class WaveSystem : MonoBehaviour
             zombieHealth = 100f;
             numOfZombies = 7;
             zombiesToSpawn = numOfZombies;
-            minSpeed = 3f;
-            maxSpeed = 4f;
+            minSpeed = 1f;
+            maxSpeed = 2f;
             StartCoroutine(SpawnZombies());
             return;
         }
@@ -86,7 +82,7 @@ public class WaveSystem : MonoBehaviour
 
     public float CalculateZombieHealth()
     {
-        return zombieHealth * 1.1f;
+        return (zombieHealth * 1.1f) + 10;
     }
 
     public void CalculateZombieSpeedRange()
