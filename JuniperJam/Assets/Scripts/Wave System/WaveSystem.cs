@@ -25,6 +25,8 @@ public class WaveSystem : MonoBehaviour
     private int maxZombiesToSpawn = 2, minZombiesToSpawn = 1; //the amount of zombies that can spawn at once
     private float spawnInterval = 1.5f;
     [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private GameObject tankZombiePrefab;
+    [SerializeField] private GameObject fastZombiePrefab;    
     [SerializeField] private List<GameObject> spawnPoints;    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -110,9 +112,36 @@ public class WaveSystem : MonoBehaviour
             for(int i = 0; i < amount; i++)
             {
                 GameObject chosenPoint = points[Random.Range(0, points.Count)];
-                GameObject spawnedZombie = Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
-                spawnedZombie.TryGetComponent(out AIEnemy enemy);
-                enemy.SetStats(zombieHealth, Random.Range(minSpeed, maxSpeed));
+                GameObject spawnedZombie = null;
+                if (currentWave > 5)
+                {
+                    int choice = Random.Range(0, 100);
+                    if(choice < 90)
+                    {
+                        spawnedZombie = Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                        spawnedZombie.TryGetComponent(out AIEnemy enemy);
+                        enemy.SetStats(zombieHealth, Random.Range(minSpeed, maxSpeed));
+                    }
+                    else if(choice >= 90 && choice < 95)
+                    {
+                        spawnedZombie = Instantiate(fastZombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                        spawnedZombie.TryGetComponent(out AIEnemy enemy);
+                        enemy.SetStats(zombieHealth / 5, maxSpeed * 1.1f);
+                    }
+                    else if (choice >= 95 && choice <= 100)
+                    {
+                        spawnedZombie = Instantiate(tankZombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                        spawnedZombie.TryGetComponent(out AIEnemy enemy);
+                        enemy.SetStats(zombieHealth * 3, Random.Range(minSpeed, maxSpeed) * 0.5f);
+                    }
+                }
+                else
+                {
+                    spawnedZombie = Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
+                    spawnedZombie.TryGetComponent(out AIEnemy enemy);
+                    enemy.SetStats(zombieHealth, Random.Range(minSpeed, maxSpeed));
+                }
+
                 points.Remove(chosenPoint);
                 zombiesToSpawn--;
                 currentZombies++;

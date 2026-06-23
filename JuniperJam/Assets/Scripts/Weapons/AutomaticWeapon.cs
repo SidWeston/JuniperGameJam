@@ -10,6 +10,9 @@ public class AutomaticWeapon : Weapon
     [SerializeField] private float energyCostPerShot;
     [SerializeField] private float weaponSpread;
 
+    [SerializeField] private Transform barrelPivot;
+    [SerializeField] private float rotationRate;
+
     private Coroutine fireRoutine;
     private Vector2 mousePos;
 
@@ -26,6 +29,15 @@ public class AutomaticWeapon : Weapon
     void Update()
     {
         fireCooldown = baseFireCooldown * (energyManager.energyPercent > 0.5f ? 1f : energyManager.energyPercent > 0f ? 1.5f : 2.5f) / combatController.fireRateMulti;
+
+        if(firing)
+        {
+            barrelPivot.Rotate(rotationRate / fireCooldown * Time.deltaTime, 0, 0);
+            if(barrelPivot.rotation.x > 360)
+            {
+                barrelPivot.rotation = Quaternion.Euler(0, 0, 0);
+            }
+        }
     }
 
     public override void FireWeapon(Plane groundPlane)
