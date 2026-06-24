@@ -7,7 +7,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private WindupManager windupManager;    
 
     //settings
-    [SerializeField] private float moveSpeed;    
+    [SerializeField] private float walkSpeed;
+    private float moveSpeed;
     [SerializeField] private float resourceDrainRate;
 
     public bool movementEnabled = true;
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         InputManager.instance.moveEvent += OnMove;
+        moveSpeed = walkSpeed;
     }
 
     // Update is called once per frame
@@ -28,13 +30,18 @@ public class PlayerMovement : MonoBehaviour
 
         if(windupManager.energy > 0)
         {
-            //if movement input being inputted by the input
-            if(moveVector.magnitude > 0)
-            {
-                Vector3 movement = new Vector3(moveVector.x, 0, moveVector.y);
-                controller.Move(movement * moveSpeed * Time.deltaTime);
-                windupManager.energy -= resourceDrainRate * Time.deltaTime;
-            }
+            moveSpeed = walkSpeed;
+        }
+        else
+        {
+            moveSpeed = walkSpeed / 3;
+        }
+        //if movement input being inputted by the input
+        if (moveVector.magnitude > 0)
+        {
+            Vector3 movement = new Vector3(moveVector.x, 0, moveVector.y);
+            controller.Move(movement * moveSpeed * Time.deltaTime);
+            windupManager.energy -= resourceDrainRate * Time.deltaTime;
         }
     }
 

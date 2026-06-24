@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class WaveSystem : MonoBehaviour
 {
@@ -27,7 +28,13 @@ public class WaveSystem : MonoBehaviour
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject tankZombiePrefab;
     [SerializeField] private GameObject fastZombiePrefab;    
-    [SerializeField] private List<GameObject> spawnPoints;    
+    [SerializeField] private List<GameObject> spawnPoints;
+
+    public UpgradeManager upgradeManager;
+    public TextMeshProUGUI tokensCounter;
+    public TextMeshProUGUI roundCounter;
+    public TextMeshProUGUI zombieSpawnedCounter;
+    public TextMeshProUGUI zombiesToSpawnCounter;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,6 +55,7 @@ public class WaveSystem : MonoBehaviour
     public void KillZombie()
     {
         currentZombies--;
+        zombieSpawnedCounter.SetText("Enemies Remaining: " + currentZombies);
         if (zombiesToSpawn == 0 && currentZombies == 0)
         {
             Invoke("NextWave", 4.0f);
@@ -57,8 +65,9 @@ public class WaveSystem : MonoBehaviour
     public void NextWave()
     {        
         currentWave++;
+        roundCounter.SetText("Current Round: " + currentWave);
         //manually set the first wave, then the next ones can increase algorithmically
-        if(currentWave == 1)
+        if (currentWave == 1)
         {
             zombieHealth = 100f;
             numOfZombies = 7;
@@ -69,8 +78,12 @@ public class WaveSystem : MonoBehaviour
             return;
         }
 
-        numOfZombies = CalculateNumOfZombies();
+        upgradeManager.upgradeTokens++;
+        tokensCounter.SetText("Upgrade Tokens: " + upgradeManager.upgradeTokens);
+
+        numOfZombies = CalculateNumOfZombies();        
         zombiesToSpawn = numOfZombies; //zombies to spawn decrements when a zombie is spawned, num of zombies is the total number in the wave, and will be used to calculate the next wave
+        zombiesToSpawnCounter.SetText("Enemies To Spawn: " + zombiesToSpawn);
         zombieHealth = CalculateZombieHealth();
         CalculateZombieSpeedRange();
 
@@ -132,7 +145,7 @@ public class WaveSystem : MonoBehaviour
                     {
                         spawnedZombie = Instantiate(tankZombiePrefab, chosenPoint.transform.position, Quaternion.identity);
                         spawnedZombie.TryGetComponent(out AIEnemy enemy);
-                        enemy.SetStats(zombieHealth * 3, Random.Range(minSpeed, maxSpeed) * 0.5f);
+                        enemy.SetStats(zombieHealth * 5, Random.Range(minSpeed, maxSpeed) * 0.5f);
                     }
                 }
                 else
@@ -144,8 +157,10 @@ public class WaveSystem : MonoBehaviour
 
                 points.Remove(chosenPoint);
                 zombiesToSpawn--;
+                zombiesToSpawnCounter.SetText("Enemies To Spawn: " + zombiesToSpawn);
                 currentZombies++;
-                if(zombiesToSpawn == 0)
+                zombieSpawnedCounter.SetText("Enemies Remaining: " + currentZombies);
+                if (zombiesToSpawn == 0)
                 {
                     break;
                 }

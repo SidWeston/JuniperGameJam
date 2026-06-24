@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour, IPlayerActions
     //input keys
     public InputKey shootKey = new InputKey();
     public InputKey windupKey = new InputKey();
+    public InputKey interactKey = new InputKey();
 
     private void Awake()
     {
@@ -75,6 +76,20 @@ public class InputManager : MonoBehaviour, IPlayerActions
         {
             windupKey.downCounter = 0;
             windupKey.InvokeKeyPress(false);
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<float>() > 0 && interactKey.downCounter == 0)
+        {
+            interactKey.downCounter++;
+            interactKey.InvokeKeyPress(true);
+        }
+        else if (context.ReadValue<float>() <= 0)
+        {
+            interactKey.downCounter = 0;
+            interactKey.InvokeKeyPress(false);
         }
     }
 }
