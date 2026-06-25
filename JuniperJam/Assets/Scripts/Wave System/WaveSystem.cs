@@ -92,17 +92,17 @@ public class WaveSystem : MonoBehaviour
 
     public int CalculateNumOfZombies()
     {        
-        return numOfZombies + Mathf.RoundToInt(countGrowth * (currentWave - 1));
+        return numOfZombies + (int)countGrowth + (currentWave - 1);
     }
 
     public float CalculateZombieHealth()
     {
-        return (zombieHealth * 1.1f) + 10;
+        return (zombieHealth * 1.05f) + 5;
     }
 
     public void CalculateZombieSpeedRange()
     {
-        float growth = speedGrowRate * (currentWave - 1);
+        float growth = (speedGrowRate / 2) * (currentWave - 1);
 
         float min = minSpeed + growth;
         float max = maxSpeed + growth;
@@ -129,19 +129,13 @@ public class WaveSystem : MonoBehaviour
                 if (currentWave > 5)
                 {
                     int choice = Random.Range(0, 100);
-                    if(choice < 90)
+                    if(choice <= 90)
                     {
                         spawnedZombie = Instantiate(zombiePrefab, chosenPoint.transform.position, Quaternion.identity);
                         spawnedZombie.TryGetComponent(out AIEnemy enemy);
                         enemy.SetStats(zombieHealth, Random.Range(minSpeed, maxSpeed));
                     }
-                    else if(choice >= 90 && choice < 95)
-                    {
-                        spawnedZombie = Instantiate(fastZombiePrefab, chosenPoint.transform.position, Quaternion.identity);
-                        spawnedZombie.TryGetComponent(out AIEnemy enemy);
-                        enemy.SetStats(zombieHealth / 5, maxSpeed * 1.1f);
-                    }
-                    else if (choice >= 95 && choice <= 100)
+                    else if (choice > 90 && choice <= 100)
                     {
                         spawnedZombie = Instantiate(tankZombiePrefab, chosenPoint.transform.position, Quaternion.identity);
                         spawnedZombie.TryGetComponent(out AIEnemy enemy);

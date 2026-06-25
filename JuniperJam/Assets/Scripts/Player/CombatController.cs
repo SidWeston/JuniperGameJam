@@ -29,6 +29,12 @@ public class CombatController : MonoBehaviour
         InputManager.instance.shootKey.keyPress += OnFire;
     }
 
+    public void UnSubInput()
+    {
+        InputManager.instance.mouseEvent -= OnMouseMove;
+        InputManager.instance.shootKey.keyPress -= OnFire;
+    }
+
     // Update is called once per frame
     void Update()
     {

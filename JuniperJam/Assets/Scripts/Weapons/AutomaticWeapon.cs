@@ -18,6 +18,8 @@ public class AutomaticWeapon : Weapon
 
     private float baseFireCooldown;
 
+    [SerializeField] private AudioSource gunSound;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -65,6 +67,9 @@ public class AutomaticWeapon : Weapon
                 baseDirection.Normalize();
 
                 int bulletCount = combatController.bulletsPerShot;
+
+                gunSound.pitch = Random.Range(0.9f, 1.2f);
+                gunSound.Play();
 
                 for (int i = 0; i < bulletCount; i++)
                 {

@@ -45,6 +45,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void UnSubInput()
+    {
+        InputManager.instance.moveEvent -= OnMove;
+    }
+
     private void OnMove(Vector2 input)
     {
         moveVector = input;

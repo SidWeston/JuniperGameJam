@@ -39,6 +39,11 @@ public class PlayerAnimationController : MonoBehaviour
         animancer.Layers[1].Play(combatController.currentWeapon.aimAnim);
     }
 
+    public void UnSubInputs()
+    {
+        InputManager.instance.moveEvent -= OnMove;
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -33,6 +33,8 @@ public class AIEnemy : MonoBehaviour
 
     private bool dead = false;
 
+    public AudioSource audioSource;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -116,6 +118,9 @@ public class AIEnemy : MonoBehaviour
 
             attackTrigger.enabled = false;
             bodyCollider.enabled = false;
+
+            audioSource.pitch = Random.Range(0.8f, 1.2f);
+            audioSource.Play();
 
             WaveSystem.instance.KillZombie();
         }

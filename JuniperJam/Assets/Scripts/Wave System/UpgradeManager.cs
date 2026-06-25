@@ -29,6 +29,10 @@ public class UpgradeManager : MonoBehaviour
 
     private bool playerOverlapping = false;
 
+    public AudioSource audioSource;
+
+    public GameObject hintText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {        
@@ -94,9 +98,15 @@ public class UpgradeManager : MonoBehaviour
                         break;
                     }
             }
+            audioSource.Play();
             Destroy(textPopup, 4.0f);
             Invoke("StopSpinning", 2.0f);
         }
+    }
+
+    public void UnSubInput()
+    {
+        InputManager.instance.interactKey.keyPress -= OnInteract;
     }
 
     private void StopSpinning()
@@ -121,6 +131,7 @@ public class UpgradeManager : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             playerOverlapping = true;
+            hintText.SetActive(true);
         }
     }
 
@@ -129,6 +140,7 @@ public class UpgradeManager : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             playerOverlapping = false;
+            hintText.SetActive(false);
         }
     }
 }

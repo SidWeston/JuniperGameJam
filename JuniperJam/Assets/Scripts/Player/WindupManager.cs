@@ -27,15 +27,14 @@ public class WindupManager : MonoBehaviour
 
     //inputs
     private bool winding = false;
-    private bool holdingPivot = false;    
+    private bool holdingPivot = true;    
     private Vector2 mousePos;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InputManager.instance.windupKey.keyPress += OnEnterWindup;
-        InputManager.instance.shootKey.keyPress += OnMouseClick;
-        InputManager.instance.mouseEvent += OnMouseMove;
+        InputManager.instance.mouseEvent += OnMouseMove;    
 
         if(!movement)
         {
@@ -48,6 +47,12 @@ public class WindupManager : MonoBehaviour
         spinImage.enabled = false;
     }
 
+    public void UnSubInput()
+    {
+        InputManager.instance.windupKey.keyPress -= OnEnterWindup;
+        InputManager.instance.mouseEvent -= OnMouseMove;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -57,43 +62,40 @@ public class WindupManager : MonoBehaviour
 
         if(winding)
         {
-            if(holdingPivot)
+            //windupCenter should be the center of the screen
+            Vector2 offset = mousePos - windupCenter;
+
+            if (offset.magnitude < minRadius)
             {
-                //windupCenter should be the center of the screen
-                Vector2 offset = mousePos - windupCenter;
-
-                if (offset.magnitude < minRadius)
-                {
-                    return;
-                }
-
-                //I still have no idea what an Atan2 is. thanks google.
-                float currentAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
-
-                //check if its the first time through
-                if(!hasLastAngle)
-                {
-                    lastAngle = currentAngle;
-                    hasLastAngle = true;
-                    //cant compare them if they're the same, so return for now
-                    return;
-                }
-
-                //calculate the angle to see how far the mouse has turned
-                float delta = Mathf.DeltaAngle(lastAngle, currentAngle);
-                lastAngle = currentAngle;                
-
-                //clamp it to 0, otherwise turning the other way reduces energy
-                delta = Mathf.Clamp(delta, delta, 0);
-
-                //rotate the key
-                keyObject.transform.Rotate(new Vector3(delta, 0, 0));
-                smallKeyObject.transform.Rotate(new Vector3(delta, 0, 0));
-
-                //finally add the energy on
-                energy += (-delta * energyGainRate) * Time.deltaTime;
-                energy = Mathf.Clamp(energy, 0, maxEnergy);
+                return;
             }
+
+            //I still have no idea what an Atan2 is. thanks google.
+            float currentAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
+
+            //check if its the first time through
+            if (!hasLastAngle)
+            {
+                lastAngle = currentAngle;
+                hasLastAngle = true;
+                //cant compare them if they're the same, so return for now
+                return;
+            }
+
+            //calculate the angle to see how far the mouse has turned
+            float delta = Mathf.DeltaAngle(lastAngle, currentAngle);
+            lastAngle = currentAngle;
+
+            //clamp it to 0, otherwise turning the other way reduces energy
+            delta = Mathf.Clamp(delta, delta, 0);
+
+            //rotate the key
+            keyObject.transform.Rotate(new Vector3(delta, 0, 0));
+            smallKeyObject.transform.Rotate(new Vector3(delta, 0, 0));
+
+            //finally add the energy on
+            energy += (-delta * energyGainRate) * Time.deltaTime;
+            energy = Mathf.Clamp(energy, 0, maxEnergy);
         }
     }
 
@@ -101,8 +103,7 @@ public class WindupManager : MonoBehaviour
     {
         if (!input) return;
 
-        winding = !winding;
-        holdingPivot = false;
+        winding = !winding;        
         hasLastAngle = false;
 
         keyObject.GetComponent<Renderer>().enabled = winding;
